@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +16,9 @@ import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_currencylocallist.*
+import android.R.attr.data
+
+
 
 class CurrencyLocalListFragment : Fragment() {
 
@@ -29,7 +33,11 @@ class CurrencyLocalListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_currencylocallist, container, false)
+        val binding = DataBindingUtil.inflate(inflater,R.layout.fragment_currencylocallist, container, false)
+        val view = binding.getRoot()
+        //here data must be an instance of the class MarsDataProvider
+        binding.setMarsdata(data)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
