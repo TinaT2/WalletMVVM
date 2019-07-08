@@ -14,6 +14,7 @@ import com.example.walletmvvm.R
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_currencylist.*
 
 class CurrencyListFragment : Fragment(), CurrencyListContract.View,
@@ -42,6 +43,31 @@ class CurrencyListFragment : Fragment(), CurrencyListContract.View,
         initUiListeners()
     }
 
+    fun getData():io.reactivex.Observer<CurrencyModel>{
+
+        var listCurrencySubscriber = object : io.reactivex.Observer<CurrencyModel> {
+
+
+            override fun onNext(t: CurrencyModel) {
+
+            }
+
+            override fun onComplete() {
+
+            }
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onError(e: Throwable) {
+
+            }
+        }
+
+        return listCurrencySubscriber
+    }
+
     override fun firstSetup() {
         //
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
@@ -53,7 +79,8 @@ class CurrencyListFragment : Fragment(), CurrencyListContract.View,
         currencyListAdapter = CurrencyListAdapter(this)
         recyclerview_currencylist_list.adapter = currencyListAdapter
 
-        presenter.getCurrencyListFromServer()
+        //presenter.getCurrencyListFromServer()
+        getData()
 
         getCurrenciesFromDatabase()
     }

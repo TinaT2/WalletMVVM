@@ -18,26 +18,35 @@ class CurrencyListPresenter(val currencyListView: CurrencyListContract.View) :
 
 
     override fun getCurrencyListFromServer() {
-        APIClient.getService()?.currencyList()?.enqueue(object : Callback<List<CurrencyModel>> {
-            override fun onFailure(call: Call<List<CurrencyModel>>, t: Throwable) {
-                val result = "failed: " + t.message
-                currencyListView.showResult(result, false)
-            }
-
-            override fun onResponse(
-                call: Call<List<CurrencyModel>>,
-                response: Response<List<CurrencyModel>>
-            ) {
-                val result = "responsed: " + response.message()
-                currencyListView.showResult(result, false)
-                currencyListServer = response.body()
-                if (!currencyListServer.isNullOrEmpty()) {
-                    currencyListView.setRecyclerData(currencyListServer!!)
-                    currencyListView.visibleAddButton()
-                }
-            }
-
-        })
+//        APIClient.getService()?.currencyList()?.enqueue(object : Callback<List<CurrencyModel>> {
+//            override fun onFailure(call: Call<List<CurrencyModel>>, t: Throwable) {
+//                val result = "failed: " + t.message
+//                currencyListView.showResult(result, false)
+//            }
+//
+//            override fun onResponse(call: Call<List<CurrencyModel>>, response: Response<List<CurrencyModel>>) {
+//
+//
+//
+//                var currencyList=response.body()
+//
+//
+//
+//
+//
+//
+//                val result = "responsed: " + response.message()
+//                currencyListView.showResult(result, false)
+//                currencyListServer = response.body()
+//                if (!currencyListServer.isNullOrEmpty()) {
+//                    currencyListView.setRecyclerData(currencyListServer!!)
+//                    currencyListView.visibleAddButton()
+//
+//
+//                }
+//            }
+//
+//        })
     }
 
 //
