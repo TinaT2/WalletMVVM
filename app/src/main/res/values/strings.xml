@@ -3,4 +3,6 @@
     <string name="all_currencies">Currencies</string>
     <string name="currencylist_itemadded">item added</string>
     <string name="currencylist_itemsadded">items added</string>
+    <string name="currencylist_currencyserverlist">Currency Server List</string>
+    <string name="button_currencylocallist">Currency Local List</string>
 </resources>

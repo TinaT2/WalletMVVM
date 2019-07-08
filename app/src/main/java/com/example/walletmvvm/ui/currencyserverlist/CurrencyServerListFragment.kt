@@ -1,4 +1,4 @@
-package com.example.walletmvvm.ui.currencylist
+package com.example.walletmvvm.ui.currencyserverlist
 
 import android.os.Bundle
 import android.util.Log
@@ -14,14 +14,14 @@ import com.example.walletmvvm.R
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_currencylist.*
+import kotlinx.android.synthetic.main.fragment_currencyserverlist.*
 
-class CurrencyListFragment : Fragment(), CurrencyListContract.View,
-    CurrencyListAdapter.ViewCallbackInterface {
+class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
+    CurrencyServerListAdapter.ViewCallbackInterface {
 
 
-    override lateinit var presenter: CurrencyListContract.Presenter
-    private lateinit var currencyListAdapter: CurrencyListAdapter
+    override lateinit var presenter: CurrencyServerListContract.Presenter
+    private lateinit var currencyListAdapter: CurrencyServerListAdapter
 
     private lateinit var currencyViewModel: CurrencyViewModel
 
@@ -32,7 +32,7 @@ class CurrencyListFragment : Fragment(), CurrencyListContract.View,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_currencylist, container, false)
+        return inflater.inflate(R.layout.fragment_currencyserverlist, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,16 +46,14 @@ class CurrencyListFragment : Fragment(), CurrencyListContract.View,
         //
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
         //
-        presenter = CurrencyListPresenter(this)
+        presenter = CurrencyServerListPresenter(this)
         //adapter
         recyclerview_currencylist_list.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        currencyListAdapter = CurrencyListAdapter(this)
+        currencyListAdapter = CurrencyServerListAdapter(this)
         recyclerview_currencylist_list.adapter = currencyListAdapter
 
         presenter.getCurrencyListFromServer()
-
-        getCurrenciesFromDatabase()
     }
 
      override fun setRecyclerData(currencyList:List<CurrencyModel>) {
@@ -93,15 +91,6 @@ class CurrencyListFragment : Fragment(), CurrencyListContract.View,
         showResult(message, false)
     }
 
-    private fun getCurrenciesFromDatabase(){
-        currencyViewModel.currencyList.observe(this, Observer { currencyList ->
-            // Update the cached copy of the words in the adapter.
-            currencyList?.let {
-                for (currency in it){
-                    Log.v("currencyList",currency.name?:" ")
-                }}
-        })
-    }
 
 
 }

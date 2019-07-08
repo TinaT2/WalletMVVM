@@ -1,4 +1,4 @@
-package com.example.walletmvvm.ui.currencylist
+package com.example.walletmvvm.ui.currencylocallist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walletmvvm.R
 import com.example.walletmvvm.data.model.CurrencyModel
-import kotlinx.android.synthetic.main.item_currencylist.view.*
+import kotlinx.android.synthetic.main.item_currencylocallist.view.*
 
-class CurrencyListAdapter(private val callbackInterface: ViewCallbackInterface) :
-    RecyclerView.Adapter<CurrencyListAdapter.ViewHolder>() {
+class CurrencyLocalListAdapter :
+    RecyclerView.Adapter<CurrencyLocalListAdapter.ViewHolder>() {
 
     var currencyList = emptyList<CurrencyModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_currencylist,
+                R.layout.item_currencylocallist,
                 parent,
                 false
             )
@@ -27,10 +27,6 @@ class CurrencyListAdapter(private val callbackInterface: ViewCallbackInterface) 
         holder.itemView.textView_currencylist_name.text = currencyList[position].name
         holder.itemView.textview_currencylist_symbol.text = currencyList[position].symbol
         holder.itemView.textView_currencylist_code.text = currencyList[position].code
-        holder.itemView.imagebutton_currencylist_add.setOnClickListener {
-            callbackInterface.insertCurrencyItemToDatabase(currencyList[position])
-            callbackInterface.showResultCallback("item added")
-        }
 
     }
 
@@ -41,8 +37,4 @@ class CurrencyListAdapter(private val callbackInterface: ViewCallbackInterface) 
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    interface ViewCallbackInterface {
-        fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel)
-        fun showResultCallback(message: String)
-    }
 }

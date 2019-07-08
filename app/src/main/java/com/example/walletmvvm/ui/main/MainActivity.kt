@@ -1,10 +1,12 @@
 package com.example.walletmvvm.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.walletmvvm.R
-import com.example.walletmvvm.ui.currencylist.CurrencyListActivity
+import com.example.walletmvvm.ui.currencylocallist.CurrencyLocalListActivity
+import com.example.walletmvvm.ui.currencyserverlist.CurrencyServerListActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,8 +17,14 @@ class MainActivity : AppCompatActivity() {
         initUiComponents()
     }
 
-    private fun initUiComponents(){
-        val intent = Intent(this,CurrencyListActivity::class.java)
-        startActivity(intent)
+    private fun initUiComponents() {
+        button_currencyserverlist.setOnClickListener {
+            val intent = Intent(this, CurrencyServerListActivity::class.java)
+            startActivity(intent)
+        }
+        button_currencylocallist.setOnClickListener {
+            val intent = Intent(this, CurrencyLocalListActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

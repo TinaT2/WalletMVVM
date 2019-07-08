@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.currencylist.CurrencyListActivity"/>
+        <activity android:name=".ui.currencyserverlist.CurrencyServerListActivity"/>
+        <activity android:name=".ui.currencylocallist.CurrencyLocalListActivity"/>
     </application>
 
 </manifest>

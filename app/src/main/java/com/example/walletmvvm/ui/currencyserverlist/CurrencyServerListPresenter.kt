@@ -1,16 +1,13 @@
-package com.example.walletmvvm.ui.currencylist
+package com.example.walletmvvm.ui.currencyserverlist
 
-import com.example.walletmvvm.WalletMvvmApplication
-import com.example.walletmvvm.data.dao.CurrencyDao
-import com.example.walletmvvm.data.database.WalletRoomDatabase
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CurrencyListPresenter(val currencyListView: CurrencyListContract.View) :
-    CurrencyListContract.Presenter {
+class CurrencyServerListPresenter(val currencyListView: CurrencyServerListContract.View) :
+    CurrencyServerListContract.Presenter {
     //override var currencyListDatabase = emptyList<CurrencyModel>()
     override var currencyListServer: List<CurrencyModel>? = null
 //    private val currencyDao: CurrencyDao =

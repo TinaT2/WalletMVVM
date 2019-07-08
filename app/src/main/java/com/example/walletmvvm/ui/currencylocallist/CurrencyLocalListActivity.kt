@@ -1,16 +1,16 @@
-package com.example.walletmvvm.ui.currencylist
+package com.example.walletmvvm.ui.currencylocallist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.walletmvvm.R
 
-class CurrencyListActivity : AppCompatActivity() {
+class CurrencyLocalListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_currencylist)
+        setContentView(R.layout.activity_currencylocallist)
 
         firstSetup()
     }
@@ -22,10 +22,10 @@ class CurrencyListActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayShowCustomEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(true)
-        supportActionBar?.setCustomView(R.layout.toolbar_currencylist)
+        supportActionBar?.setCustomView(R.layout.toolbar_currencyserverlist)
 
         supportFragmentManager.beginTransaction()
-            .add(R.id.coordinatorlayout_currencylist_container, CurrencyListFragment()).commit()
+            .add(R.id.coordinatorlayout_currencylist_container, CurrencyLocalListFragment()).commit()
     }
 
     override fun onSupportNavigateUp(): Boolean {

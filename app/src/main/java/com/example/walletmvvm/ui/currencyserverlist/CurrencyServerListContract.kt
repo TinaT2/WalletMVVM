@@ -1,8 +1,8 @@
-package com.example.walletmvvm.ui.currencylist
+package com.example.walletmvvm.ui.currencyserverlist
 
 import com.example.walletmvvm.data.model.CurrencyModel
 
-interface CurrencyListContract {
+interface CurrencyServerListContract {
 
     interface View {
 
