@@ -54,6 +54,7 @@ class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
         recyclerview_currencylist_list.adapter = currencyListAdapter
 
         presenter.getCurrencyListFromServer()
+        //
     }
 
      override fun setRecyclerData(currencyList:List<CurrencyModel>) {

@@ -2,9 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
-<variable name="currencyname" type="String"/>
-<variable name="currencysymbol" type="String"/>
-<variable name="currencycode" type="String"/>
+<variable name="currencyModel" type="com.example.walletmvvm.data.model.CurrencyModel"/>
+<!--<variable name="currencysymbol" type="String"/>-->
+<!--<variable name="currencycode" type="String"/>-->
     </data>
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@{currencysymbol}"/>
+                    tools:text="@{currencyModel.symbol}"/>
             <TextView
                     android:id="@+id/textView_currencylist_name"
                     style="@style/FontBody"
@@ -41,7 +41,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="@{currencyname}"/>
+                    tools:text="@{currencyModel.name}"/>
             <TextView
                     android:id="@+id/textView_currencylist_code"
                     style="@style/FontSmall"
@@ -52,7 +52,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_currencylist_name"
-                    tools:text="@{currencycode}"/>
+                    tools:text="@{currencyModel.code}"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
