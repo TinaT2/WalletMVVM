@@ -1,5 +1,6 @@
 package com.example.walletmvvm.ui.currencyserverlist
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,9 @@ import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_currencyserverlist.*
 
-class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
+class CurrencyServerListFragment : Fragment(),
     CurrencyServerListAdapter.ViewCallbackInterface {
 
-
-    override lateinit var presenter: CurrencyServerListContract.Presenter
     private lateinit var currencyListAdapter: CurrencyServerListAdapter
 
     private lateinit var currencyViewModel: CurrencyViewModel
@@ -38,63 +37,70 @@ class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        firstSetup()
-        initUiListeners()
+        initUIComponents()
     }
 
-    override fun getData(): Observer<List<CurrencyModel>> {
 
-        return object : Observer<List<CurrencyModel>> {
-
-
-            override fun onNext(t: List<CurrencyModel>) {
-
-                setRecyclerData(t)
-            }
-
-            override fun onComplete() {
-
-            }
-
-            override fun onSubscribe(d: Disposable) {
-
-            }
-
-            override fun onError(e: Throwable) {
-
-            }
-        }
+    private fun initUIComponents() {
+        initViewModel()
+        initAdapter()
+        initObservers()
     }
 
-    override fun firstSetup() {
-        //
-        currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
-        //
-        presenter = CurrencyServerListPresenter(this)
-        //adapter
-        recyclerview_currencylist_list.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        currencyListAdapter = CurrencyServerListAdapter(this)
-        recyclerview_currencylist_list.adapter = currencyListAdapter
-
-        presenter.getCurrencyListFromServer()
-    }
-
-    override fun setRecyclerData(currencyList: List<CurrencyModel>) {
-        progressbar_currencylist_progress?.visibility = View.GONE
+    fun setRecyclerData(currencyList: List<CurrencyModel>) {
+        invisibleProgressBar()
         currencyListAdapter.setData(currencyList)
         this.currencyList = currencyList
     }
 
 
-    override fun initUiListeners() {
+    private fun responseCurrencyListFromServer(): Observer<List<CurrencyModel>> {
+
+        return object : Observer<List<CurrencyModel>> {
+
+            override fun onNext(currencyList: List<CurrencyModel>) {
+
+                setRecyclerData(currencyList)
+                visibleAddAllButton()
+            }
+
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onError(e: Throwable) {
+            }
+        }
     }
 
-    override fun showResult(result: String, showClickedButton: Boolean) {
+    private fun initViewModel() {
+        currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
+    }
+
+    private fun initAdapter() {
+        recyclerview_currencylist_list.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        currencyListAdapter = CurrencyServerListAdapter(this)
+        recyclerview_currencylist_list.adapter = currencyListAdapter
+    }
+
+    @SuppressLint("CheckResult")
+    private fun initObservers() {
+        val requestCurrencyListObserver = currencyViewModel.requestCurrencyListFromServer()
+        requestCurrencyListObserver?.subscribeWith(responseCurrencyListFromServer())
+    }
+
+    private fun invisibleProgressBar() {
+        progressbar_currencylist_progress?.visibility = View.GONE
+    }
+
+    private fun showResult(result: String) {
         constraintlayout_currencylist_base?.let { Snackbar.make(it, result, Snackbar.LENGTH_LONG).show() }
     }
 
-    override fun visibleAddButton() {
+    private fun visibleAddAllButton() {
         val addAllButton =
             activity?.findViewById<androidx.appcompat.widget.AppCompatImageButton>(R.id.imagebutton_currencylist_addall)
         addAllButton?.visibility = View.VISIBLE
@@ -103,16 +109,16 @@ class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
         }
     }
 
-    override fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel) {
-        currencyViewModel.insertCurrencyItemToDatabase(currencyModel)
-    }
-
     private fun insertCurrencyListToDatabase(currencyList: List<CurrencyModel>) {
         currencyViewModel.insertCurrencyListToDatabase(currencyList)
     }
 
+    override fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel) {
+        currencyViewModel.insertCurrencyItemToDatabase(currencyModel)
+    }
+
     override fun showResultCallback(message: String) {
-        showResult(message, false)
+        showResult(message)
     }
 
 }

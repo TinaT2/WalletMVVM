@@ -1,15 +1,14 @@
 package com.example.walletmvvm.data.repositories
 
+import android.annotation.SuppressLint
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
-import com.example.walletmvvm.data.remote.APIInterface
 import io.reactivex.Observable
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class CurrencyRepository(private val currencyDao: CurrencyDao) {
 
@@ -32,19 +31,29 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
     }
 
 
-     fun insertCurrencyListToDatabase(currencyListServer:List<CurrencyModel>) {
+    fun insertCurrencyListToDatabase(currencyListServer: List<CurrencyModel>) {
         for (currency in currencyListServer) {
             InsertCurrencyAsyncTask(currencyDao).execute(currency)
         }
     }
 
-}
-    //Async Tasks___________________________________
-    private class InsertCurrencyAsyncTask(val currencyDao: CurrencyDao) :
+    @SuppressLint("CheckResult")
+     fun requestCurrencyListFromServer():Observable<List<CurrencyModel>>? {
 
-        AsyncTask<CurrencyModel, Void, Long>() {
-        override fun doInBackground(vararg currencyModel: CurrencyModel?): Long {
-
-            return currencyModel[0]?.let { currencyDao.insert(it) } ?: 0L
-        }
+        val interfaceApi = APIClient.getService()
+       return interfaceApi?.currencyList()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
     }
+
+}
+
+//Async Tasks___________________________________
+private class InsertCurrencyAsyncTask(val currencyDao: CurrencyDao) :
+
+    AsyncTask<CurrencyModel, Void, Long>() {
+    override fun doInBackground(vararg currencyModel: CurrencyModel?): Long {
+
+        return currencyModel[0]?.let { currencyDao.insert(it) } ?: 0L
+    }
+}

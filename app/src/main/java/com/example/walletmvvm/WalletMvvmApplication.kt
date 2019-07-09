@@ -7,7 +7,6 @@ class WalletMvvmApplication:Application() {
 
     companion object {
         lateinit var instance: WalletMvvmApplication
-        //private set
     }
 
     override fun onCreate() {
