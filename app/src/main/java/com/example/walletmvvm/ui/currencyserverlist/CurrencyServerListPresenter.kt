@@ -1,7 +1,16 @@
 package com.example.walletmvvm.ui.currencyserverlist
 
+import android.annotation.SuppressLint
+import com.example.walletmvvm.WalletMvvmApplication
+import com.example.walletmvvm.data.dao.CurrencyDao
+import com.example.walletmvvm.data.database.WalletRoomDatabase
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,27 +23,64 @@ class CurrencyServerListPresenter(val currencyListView: CurrencyServerListContra
 //        WalletRoomDatabase.getDatabase(WalletMvvmApplication.instance.applicationContext).currencyDao()
 
 
+    @SuppressLint("CheckResult")
     override fun getCurrencyListFromServer() {
-        APIClient.getService()?.currencyList()?.enqueue(object : Callback<List<CurrencyModel>> {
-            override fun onFailure(call: Call<List<CurrencyModel>>, t: Throwable) {
-                val result = "failed: " + t.message
-                currencyListView.showResult(result, false)
-            }
 
-            override fun onResponse(
-                call: Call<List<CurrencyModel>>,
-                response: Response<List<CurrencyModel>>
-            ) {
-                val result = "responsed: " + response.message()
-                currencyListView.showResult(result, false)
-                currencyListServer = response.body()
-                if (!currencyListServer.isNullOrEmpty()) {
-                    currencyListView.setRecyclerData(currencyListServer!!)
-                    currencyListView.visibleAddButton()
-                }
-            }
 
-        })
+
+        val interfaceApi = APIClient.getService()
+//
+//        interfaceApi?.currencyList()
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribeWith(DisposableSingleObserver<List<CurrencyModel>>{
+//
+//
+//
+//
+//
+//            })
+
+        interfaceApi?.currencyList()
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribeWith(currencyListView.getData())
+
+
+
+
+
+
+
+//        APIClient.getService()?.currencyList()?.enqueue(object : Callback<List<CurrencyModel>> {
+//            override fun onFailure(call: Call<List<CurrencyModel>>, t: Throwable) {
+//                val result = "failed: " + t.message
+//                currencyListView.showResult(result, false)
+//            }
+//
+//            override fun onResponse(call: Call<List<CurrencyModel>>, response: Response<List<CurrencyModel>>) {
+//
+//
+//
+//                var currencyList=response.body()
+//
+//
+//
+//
+//
+//
+//                val result = "responsed: " + response.message()
+//                currencyListView.showResult(result, false)
+//                currencyListServer = response.body()
+//                if (!currencyListServer.isNullOrEmpty()) {
+//                    currencyListView.setRecyclerData(currencyListServer!!)
+//                    currencyListView.visibleAddButton()
+//
+//
+//                }
+//            }
+//
+//        })
     }
 
 //
@@ -69,3 +115,5 @@ class CurrencyServerListPresenter(val currencyListView: CurrencyServerListContra
 
 
 }
+
+

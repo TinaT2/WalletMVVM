@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
+import com.example.walletmvvm.data.remote.APIInterface
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,32 +38,10 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
         }
     }
 
-    fun getCurrencyListFromServer() {
-        APIClient.getService()?.currencyList()?.enqueue(object : Callback<List<CurrencyModel>> {
-            override fun onFailure(call: Call<List<CurrencyModel>>, t: Throwable) {
-                val result = "failed: " + t.message
-                //currencyListView.showResult(result, false)
-            }
-
-            override fun onResponse(
-                call: Call<List<CurrencyModel>>,
-                response: Response<List<CurrencyModel>>
-            ) {
-                val result = "responsed: " + response.message()
-                //currencyListView.showResult(result, false)
-                val currencyListServer = response.body()
-                if (!currencyListServer.isNullOrEmpty()) {
-//                    currencyListView.setRecyclerData(currencyListServer)
-//                    currencyListView.visibleAddButton()
-                }
-            }
-
-        })
-    }
-
 }
     //Async Tasks___________________________________
     private class InsertCurrencyAsyncTask(val currencyDao: CurrencyDao) :
+
         AsyncTask<CurrencyModel, Void, Long>() {
         override fun doInBackground(vararg currencyModel: CurrencyModel?): Long {
 

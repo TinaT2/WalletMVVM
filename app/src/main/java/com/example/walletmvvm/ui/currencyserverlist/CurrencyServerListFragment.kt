@@ -1,12 +1,10 @@
 package com.example.walletmvvm.ui.currencyserverlist
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +12,8 @@ import com.example.walletmvvm.R
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_currencyserverlist.*
 
 class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
@@ -42,6 +42,30 @@ class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
         initUiListeners()
     }
 
+    override fun getData(): Observer<List<CurrencyModel>> {
+
+        return object : Observer<List<CurrencyModel>> {
+
+
+            override fun onNext(t: List<CurrencyModel>) {
+
+                setRecyclerData(t)
+            }
+
+            override fun onComplete() {
+
+            }
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onError(e: Throwable) {
+
+            }
+        }
+    }
+
     override fun firstSetup() {
         //
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
@@ -54,13 +78,12 @@ class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
         recyclerview_currencylist_list.adapter = currencyListAdapter
 
         presenter.getCurrencyListFromServer()
-        //
     }
 
-     override fun setRecyclerData(currencyList:List<CurrencyModel>) {
+    override fun setRecyclerData(currencyList: List<CurrencyModel>) {
         progressbar_currencylist_progress?.visibility = View.GONE
-         currencyListAdapter.setData(currencyList)
-         this.currencyList = currencyList
+        currencyListAdapter.setData(currencyList)
+        this.currencyList = currencyList
     }
 
 
@@ -80,18 +103,16 @@ class CurrencyServerListFragment : Fragment(), CurrencyServerListContract.View,
         }
     }
 
-     override fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel) {
+    override fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel) {
         currencyViewModel.insertCurrencyItemToDatabase(currencyModel)
     }
 
-     private fun insertCurrencyListToDatabase(currencyList: List<CurrencyModel>) {
+    private fun insertCurrencyListToDatabase(currencyList: List<CurrencyModel>) {
         currencyViewModel.insertCurrencyListToDatabase(currencyList)
     }
 
     override fun showResultCallback(message: String) {
         showResult(message, false)
     }
-
-
 
 }
