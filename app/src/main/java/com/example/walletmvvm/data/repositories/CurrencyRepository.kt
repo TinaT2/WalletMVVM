@@ -2,7 +2,10 @@ package com.example.walletmvvm.data.repositories
 
 import android.annotation.SuppressLint
 import android.os.AsyncTask
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
@@ -40,11 +43,15 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
     @SuppressLint("CheckResult")
      fun requestCurrencyListFromServer():Observable<List<CurrencyModel>>? {
 
+        Log.v("appSenario","requestCurrencyListFromServer in repository")
+
+
         val interfaceApi = APIClient.getService()
        return interfaceApi?.currencyList()
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
     }
+
 
 }
 

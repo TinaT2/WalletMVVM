@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.databinding.FragmentCurrencylocallistBinding
-import com.example.walletmvvm.viewmodels.CurrencyViewModel
+import com.example.walletmvvm.data.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_currencylocallist.*
 
@@ -32,6 +32,7 @@ class CurrencyLocalListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.v("appSenario","CurrencyLocalListFragment create")
         binding = FragmentCurrencylocallistBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,6 +41,8 @@ class CurrencyLocalListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firstSetup()
+
+
     }
 
     private fun firstSetup() {
@@ -80,5 +83,15 @@ class CurrencyLocalListFragment : Fragment() {
         this.currencyList = currencyList
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.v("appSenario","CurrencyLocalListFragment onResume")
+
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.v("appSenario","CurrencyLocalListFragment onCreate")
+
+    }
 
 }

@@ -1,6 +1,7 @@
-package com.example.walletmvvm.viewmodels
+package com.example.walletmvvm.data.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.walletmvvm.data.database.WalletRoomDatabase
@@ -14,6 +15,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
     val currencyList: LiveData<List<CurrencyModel>>
 
     init {
+        Log.v("appSenario","CurrencyViewModel init")
         val currencyDao = WalletRoomDatabase.getDatabase(application).currencyDao()
         repository = CurrencyRepository.getInstance(currencyDao)
         currencyList = repository.currencyList
@@ -28,6 +30,7 @@ class CurrencyViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun requestCurrencyListFromServer(): Observable<List<CurrencyModel>>?{
+        Log.v("appSenario","requestCurrencyListFromServer in viewModel")
         return repository.requestCurrencyListFromServer()
     }
 
