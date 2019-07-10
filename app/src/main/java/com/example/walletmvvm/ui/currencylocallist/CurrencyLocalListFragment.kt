@@ -1,12 +1,12 @@
 package com.example.walletmvvm.ui.currencylocallist
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +14,12 @@ import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.databinding.FragmentCurrencylocallistBinding
 import com.example.walletmvvm.data.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_currencylocallist.*
+
+
+
 
 
 class CurrencyLocalListFragment : Fragment() {
@@ -27,11 +32,8 @@ class CurrencyLocalListFragment : Fragment() {
 
     private lateinit var binding: FragmentCurrencylocallistBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         Log.v("appSenario","CurrencyLocalListFragment create")
         binding = FragmentCurrencylocallistBinding.inflate(inflater, container, false)
         return binding.root
@@ -41,8 +43,6 @@ class CurrencyLocalListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         firstSetup()
-
-
     }
 
     private fun firstSetup() {
@@ -55,27 +55,78 @@ class CurrencyLocalListFragment : Fragment() {
         currencyListAdapter = CurrencyLocalListAdapter(currencyList)
         recyclerview_currencylist_list.adapter = currencyListAdapter
 
+        initObservers()
         getCurrenciesFromDatabase()
     }
 
+
+    @SuppressLint("CheckResult")
+    private fun initObservers() {
+        val getCurrencyListObserver = currencyViewModel.getCurrencyLists()
+        getCurrencyListObserver?.subscribeWith(getCurrenciesFromDatabase())
+    }
 
     private fun showResult(result: String) {
         constraintlayout_currencylist_base?.let { Snackbar.make(it, result, Snackbar.LENGTH_LONG).show() }
     }
 
-    private fun getCurrenciesFromDatabase() {
-        currencyViewModel.currencyList.observe(this, Observer { currencyList ->
-            // Update the cached copy of the words in the adapter.
-            currencyList?.let {
-                for (currency in it) {
-                    Log.v("currencyList", currency.name ?: " ")
-                }
-                showResult(it.size.toString() + " items")
-                setRecyclerData(it)
-                binding.listSize = it.size
+    private fun getCurrenciesFromDatabase() : Observer<List<CurrencyModel>> {
+
+
+        return object : Observer<List<CurrencyModel>> {
+            override fun onComplete() {
+
             }
-        })
+
+            override fun onSubscribe(d: Disposable) {
+
+            }
+
+            override fun onNext(t: List<CurrencyModel>) {
+
+                t.let {
+
+                    showResult(it.size.toString() + " items")
+                    setRecyclerData(it)
+                    binding.listSize = it.size
+                }
+            }
+
+            override fun onError(e: Throwable) {
+
+            }
+
+
+        }
     }
+//        roomDb.employeeDao().getById(employeeId)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(object : DisposableMaybeObserver<Employee>() {
+//                override fun onSuccess(employee: Employee) {
+//                    // showEmployee(employee)
+//                }
+//            })
+
+
+
+
+
+
+
+
+//        currencyViewModel.currencyList.observe(this, Observer { currencyList ->
+//            // Update the cached copy of the words in the adapter.
+//            currencyList?.let {
+//                for (currency in it) {
+//                    Log.v("currencyList", currency.name ?: " ")
+//                }
+//                showResult(it.size.toString() + " items")
+//                setRecyclerData(it)
+//                binding.listSize = it.size
+//            }
+//        })
+
 
     private fun setRecyclerData(currencyList: List<CurrencyModel>) {
         //progressbar_currencylist_progress?.visibility = View.GONE

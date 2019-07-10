@@ -8,7 +8,7 @@ import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.utils.DbConstants
 
-@Database(entities = [CurrencyModel::class], version = 1)
+@Database(entities = [CurrencyModel::class], version = 1,exportSchema = false)
 abstract class WalletRoomDatabase : RoomDatabase() {
     abstract fun currencyDao(): CurrencyDao
 
