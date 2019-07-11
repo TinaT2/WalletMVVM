@@ -27,19 +27,13 @@ class CurrencyServerListFragment : Fragment(),
 
     private var currencyList = emptyList<CurrencyModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.v("appSenario","CurrencyServerListFragment create")
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.v("appSenario", "CurrencyServerListFragment create")
         return inflater.inflate(R.layout.fragment_currencyserverlist, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         initUIComponents()
     }
@@ -93,7 +87,7 @@ class CurrencyServerListFragment : Fragment(),
     @SuppressLint("CheckResult")
     private fun initObservers() {
         val requestCurrencyListObserver = currencyViewModel.requestCurrencyListFromServer()
-        requestCurrencyListObserver?.subscribeWith(responseCurrencyListFromServer())
+        requestCurrencyListObserver?.subscribe(responseCurrencyListFromServer())
     }
 
     private fun invisibleProgressBar() {
@@ -127,13 +121,13 @@ class CurrencyServerListFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        Log.v("appSenario","CurrencyServerListFragment onResume")
+        Log.v("appSenario", "CurrencyServerListFragment onResume")
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
-        Log.v("appSenario","CurrencyServerListFragment onCreate")
+        Log.v("appSenario", "CurrencyServerListFragment onCreate")
 
     }
-
 }

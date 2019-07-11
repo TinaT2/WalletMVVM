@@ -2,15 +2,11 @@ package com.example.walletmvvm.data.repositories
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
-import com.example.walletmvvm.data.viewmodels.CurrencyViewModel
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
@@ -28,9 +24,7 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
             }
     }
 
-
     fun getCurrencyList(): Observable<List<CurrencyModel>>? {
-
 
         return currencyDao.getCurrencyList()
             .subscribeOn(Schedulers.io())
@@ -62,7 +56,6 @@ class CurrencyRepository(private val currencyDao: CurrencyDao) {
     fun requestCurrencyListFromServer(): Observable<List<CurrencyModel>>? {
 
         Log.v("appSenario", "requestCurrencyListFromServer in repository")
-
 
         val interfaceApi = APIClient.getService()
         return interfaceApi?.currencyList()
