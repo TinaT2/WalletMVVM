@@ -26,23 +26,19 @@ class CurrencyServerListFragment : Fragment(),
 
     private var currencyList = emptyList<CurrencyModel>()
 
+
     private val mRecyclerView by lazy { recyclerview_currencylist_list }
     private val mProgressBar by lazy { progressbar_currencylist_progress }
     private val mRootView by lazy { constraintlayout_currencylist_base }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         Log.v("appSenario", "CurrencyServerListFragment create")
         return inflater.inflate(R.layout.fragment_currencyserverlist, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         initUIComponents()
     }
@@ -96,7 +92,7 @@ class CurrencyServerListFragment : Fragment(),
     @SuppressLint("CheckResult")
     private fun initObservers() {
         val requestCurrencyListObserver = currencyViewModel.requestCurrencyListFromServer()
-        requestCurrencyListObserver?.subscribeWith(responseCurrencyListFromServer())
+        requestCurrencyListObserver?.subscribe(responseCurrencyListFromServer())
     }
 
     private fun invisibleProgressBar() {
@@ -139,5 +135,4 @@ class CurrencyServerListFragment : Fragment(),
         Log.v("appSenario", "CurrencyServerListFragment onCreate")
 
     }
-
 }

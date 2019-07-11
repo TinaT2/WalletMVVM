@@ -1,7 +1,6 @@
 package com.example.walletmvvm.data.repositories
 
 import android.annotation.SuppressLint
-import android.os.AsyncTask
 import android.util.Log
 import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
@@ -10,7 +9,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
+
 class CurrencyServerListRepository(private val currencyDao: CurrencyDao) {
+
 
     companion object {
 
@@ -25,13 +26,21 @@ class CurrencyServerListRepository(private val currencyDao: CurrencyDao) {
     }
 
     fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel) {
-        InsertCurrencyAsyncTask(currencyDao).execute(currencyModel).get()
+
+        currencyDao.insert(currencyModel)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
     }
 
-
     fun insertCurrencyListToDatabase(currencyListServer: List<CurrencyModel>) {
+
         for (currency in currencyListServer) {
-            InsertCurrencyAsyncTask(currencyDao).execute(currency)
+
+            currencyDao.insert(currency)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
         }
     }
 
@@ -40,22 +49,10 @@ class CurrencyServerListRepository(private val currencyDao: CurrencyDao) {
 
         Log.v("appSenario", "requestCurrencyListFromServer in repository")
 
-
         val interfaceApi = APIClient.getService()
         return interfaceApi?.currencyList()
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
     }
-
-
 }
 
-//Async Tasks___________________________________
-private class InsertCurrencyAsyncTask(val currencyDao: CurrencyDao) :
-
-    AsyncTask<CurrencyModel, Void, Long>() {
-    override fun doInBackground(vararg currencyModel: CurrencyModel?): Long {
-
-        return currencyModel[0]?.let { currencyDao.insert(it) } ?: 0L
-    }
-}

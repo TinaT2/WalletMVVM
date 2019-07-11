@@ -7,17 +7,23 @@ import androidx.lifecycle.LiveData
 import com.example.walletmvvm.data.database.WalletRoomDatabase
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.repositories.CurrencyLocalListRepository
+import io.reactivex.Observable
 
 class CurrencyLocalListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: CurrencyLocalListRepository
-    val currencyList: LiveData<List<CurrencyModel>>
+
 
     init {
         Log.v("appSenario", "CurrencyLocalListViewModel init")
         val currencyDao = WalletRoomDatabase.getDatabase(application).currencyDao()
         repository = CurrencyLocalListRepository.getInstance(currencyDao)
-        currencyList = repository.currencyList
+
+    }
+
+    fun getCurrencyLists(): Observable<List<CurrencyModel>>? {
+
+        return repository.getCurrencyList()
     }
 
 }

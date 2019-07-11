@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 
-@Database(entities = [CurrencyModel::class], version = 1)
+@Database(entities = [CurrencyModel::class], version = 1,exportSchema = false)
 abstract class WalletRoomDatabase : RoomDatabase() {
     abstract fun currencyDao(): CurrencyDao
 
