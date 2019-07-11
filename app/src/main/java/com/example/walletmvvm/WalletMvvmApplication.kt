@@ -3,7 +3,7 @@ package com.example.walletmvvm
 import android.app.Application
 import com.facebook.stetho.Stetho
 
-class WalletMvvmApplication:Application() {
+class WalletMvvmApplication : Application() {
 
     companion object {
         lateinit var instance: WalletMvvmApplication

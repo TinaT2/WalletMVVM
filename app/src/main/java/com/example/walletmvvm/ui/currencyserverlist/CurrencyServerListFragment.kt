@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walletmvvm.R
 import com.example.walletmvvm.data.model.CurrencyModel
-import com.example.walletmvvm.data.viewmodels.CurrencyViewModel
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -23,16 +22,20 @@ class CurrencyServerListFragment : Fragment(),
 
     private lateinit var currencyListAdapter: CurrencyServerListAdapter
 
-    private lateinit var currencyViewModel: CurrencyViewModel
+    private lateinit var currencyViewModel: CurrencyServerListViewModel
 
     private var currencyList = emptyList<CurrencyModel>()
+
+    private val mRecyclerView by lazy { recyclerview_currencylist_list }
+    private val mProgressBar by lazy { progressbar_currencylist_progress }
+    private val mRootView by lazy { constraintlayout_currencylist_base }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.v("appSenario","CurrencyServerListFragment create")
+        Log.v("appSenario", "CurrencyServerListFragment create")
         return inflater.inflate(R.layout.fragment_currencyserverlist, container, false)
     }
 
@@ -80,14 +83,14 @@ class CurrencyServerListFragment : Fragment(),
     }
 
     private fun initViewModel() {
-        currencyViewModel = ViewModelProviders.of(this).get(CurrencyViewModel::class.java)
+        currencyViewModel = ViewModelProviders.of(this).get(CurrencyServerListViewModel::class.java)
     }
 
     private fun initAdapter() {
-        recyclerview_currencylist_list.layoutManager =
+        mRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         currencyListAdapter = CurrencyServerListAdapter(this)
-        recyclerview_currencylist_list.adapter = currencyListAdapter
+        mRecyclerView.adapter = currencyListAdapter
     }
 
     @SuppressLint("CheckResult")
@@ -97,11 +100,11 @@ class CurrencyServerListFragment : Fragment(),
     }
 
     private fun invisibleProgressBar() {
-        progressbar_currencylist_progress?.visibility = View.GONE
+        mProgressBar?.visibility = View.GONE
     }
 
     private fun showResult(result: String) {
-        constraintlayout_currencylist_base?.let { Snackbar.make(it, result, Snackbar.LENGTH_LONG).show() }
+        mRootView?.let { Snackbar.make(it, result, Snackbar.LENGTH_LONG).show() }
     }
 
     private fun visibleAddAllButton() {
@@ -127,12 +130,13 @@ class CurrencyServerListFragment : Fragment(),
 
     override fun onResume() {
         super.onResume()
-        Log.v("appSenario","CurrencyServerListFragment onResume")
+        Log.v("appSenario", "CurrencyServerListFragment onResume")
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
-        Log.v("appSenario","CurrencyServerListFragment onCreate")
+        Log.v("appSenario", "CurrencyServerListFragment onCreate")
 
     }
 

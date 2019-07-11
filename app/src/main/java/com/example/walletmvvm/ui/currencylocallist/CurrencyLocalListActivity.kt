@@ -4,8 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.walletmvvm.R
+import kotlinx.android.synthetic.main.activity_currencylocallist.*
 
 class CurrencyLocalListActivity : AppCompatActivity() {
+
+    private val mToolber by lazy{toolbar_currencylist_currency}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,7 +19,6 @@ class CurrencyLocalListActivity : AppCompatActivity() {
     }
 
     private fun firstSetup() {
-        val mToolber = findViewById<Toolbar>(R.id.toolbar_currencylist_currency)
         setSupportActionBar(mToolber)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
