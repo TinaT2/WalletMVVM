@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,9 +29,17 @@ class CurrencyLocalListFragment : Fragment() {
 
     private lateinit var binding: FragmentCurrencylocallistBinding
 
+    private lateinit var mRecyclerView: RecyclerView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    private lateinit var mProgressBar: ProgressBar
 
+    private lateinit var mRootView: View
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         Log.v("appSenario", "CurrencyLocalListFragment create")
         binding = FragmentCurrencylocallistBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,20 +48,29 @@ class CurrencyLocalListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        firstSetup()
+        initUiComponents()
     }
 
-    private fun firstSetup() {
+    private fun initUiComponents() {
 
+        initViews()
         currencyViewModel = ViewModelProviders.of(this).get(CurrencyLocalListViewModel::class.java)
-        recyclerview_currencylist_list.layoutManager =
-
+        //
+        //adapter
+        mRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         currencyListAdapter = CurrencyLocalListAdapter(currencyList)
-        recyclerview_currencylist_list.adapter = currencyListAdapter
+        mRecyclerView.adapter = currencyListAdapter
 
         initObservers()
         getCurrenciesFromDatabase()
+    }
+
+
+    private fun initViews() {
+        mRecyclerView = recyclerview_currencylist_list
+        mProgressBar = progressbar_currencylist_progress
+        mRootView = constraintlayout_currencylist_base
     }
 
 
@@ -63,7 +81,7 @@ class CurrencyLocalListFragment : Fragment() {
     }
 
     private fun showResult(result: String) {
-        constraintlayout_currencylist_base?.let { Snackbar.make(it, result, Snackbar.LENGTH_LONG).show() }
+        mRootView.let { Snackbar.make(it, result, Snackbar.LENGTH_LONG).show() }
     }
 
     private fun getCurrenciesFromDatabase(): Observer<List<CurrencyModel>> {
@@ -97,7 +115,7 @@ class CurrencyLocalListFragment : Fragment() {
 
     private fun setRecyclerData(currencyList: List<CurrencyModel>) {
 
-        progressbar_currencylist_progress?.visibility = View.GONE
+        mProgressBar.visibility = View.GONE
 
         currencyListAdapter.setData(currencyList)
         this.currencyList = currencyList

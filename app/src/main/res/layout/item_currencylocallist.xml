@@ -3,8 +3,6 @@
         xmlns:tools="http://schemas.android.com/tools">
     <data>
 <variable name="currencyModel" type="com.example.walletmvvm.data.model.CurrencyModel"/>
-<!--<variable name="currencysymbol" type="String"/>-->
-<!--<variable name="currencycode" type="String"/>-->
     </data>
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

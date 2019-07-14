@@ -13,7 +13,7 @@ class CurrencyServerListViewModel(application: Application) : AndroidViewModel(a
     private val serverListRepository: CurrencyServerListRepository
 
     init {
-        Log.v("appSenario", "CurrencyLocalListViewModel init")
+        Log.v("appSenario", "CurrencyServerListViewModel init")
         val currencyDao = WalletRoomDatabase.getDatabase(application).currencyDao()
         serverListRepository = CurrencyServerListRepository.getInstance(currencyDao)
     }
