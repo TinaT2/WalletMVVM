@@ -2,13 +2,12 @@ package com.example.walletmvvm.ui.currencylocallist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.example.walletmvvm.R
 import kotlinx.android.synthetic.main.activity_currencylocallist.*
 
 class CurrencyLocalListActivity : AppCompatActivity() {
 
-    private val mToolber by lazy{toolbar_currencylist_currency}
+    private val mToolber by lazy { toolbar_currencylist_currency }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

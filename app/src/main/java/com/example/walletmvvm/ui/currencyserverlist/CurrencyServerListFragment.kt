@@ -1,6 +1,5 @@
 package com.example.walletmvvm.ui.currencyserverlist
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -79,7 +78,8 @@ class CurrencyServerListFragment : Fragment(),
     }
 
     private fun initViewModel() {
-        currencyViewModel = ViewModelProviders.of(this).get(CurrencyServerListViewModel::class.java)
+        currencyViewModel = ViewModelProviders.of(this)
+            .get(CurrencyServerListViewModel::class.java)
     }
 
     private fun initAdapter() {
@@ -89,10 +89,12 @@ class CurrencyServerListFragment : Fragment(),
         mRecyclerView.adapter = currencyListAdapter
     }
 
-    @SuppressLint("CheckResult")
+
     private fun initObservers() {
-        val requestCurrencyListObserver = currencyViewModel.requestCurrencyListFromServer()
-        requestCurrencyListObserver?.subscribe(responseCurrencyListFromServer())
+        val requestCurrencyListObserver = currencyViewModel
+            .requestCurrencyListFromServer()
+        requestCurrencyListObserver
+            ?.subscribe(responseCurrencyListFromServer())
     }
 
     private fun invisibleProgressBar() {

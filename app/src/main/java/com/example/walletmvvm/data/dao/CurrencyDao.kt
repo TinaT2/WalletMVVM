@@ -6,9 +6,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.walletmvvm.data.database.WalletRoomDatabase
 import com.example.walletmvvm.data.model.CurrencyModel
-
-import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 
 @Dao
@@ -20,5 +19,8 @@ interface CurrencyDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(currencyModel: CurrencyModel): Completable
+    fun insert(currencyModel: CurrencyModel): Single<Long>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(vararg currencyModel: CurrencyModel): Single<Long>
 }
