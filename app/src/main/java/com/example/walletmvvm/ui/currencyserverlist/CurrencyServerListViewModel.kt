@@ -1,47 +1,45 @@
 package com.example.walletmvvm.ui.currencyserverlist
 
-import android.app.Application
+import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import com.example.walletmvvm.data.database.WalletRoomDatabase
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.repositories.CurrencyListRepository
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class CurrencyServerListViewModel(application: Application) : AndroidViewModel(application) {
+class CurrencyServerListViewModel(private val currencyListRepository:CurrencyListRepository) : ViewModel() {
+ val insertCurrencyItemToDatabaseLiveData  = MutableLiveData<Long>()
+ val insertCurrencyListToDatabaseLiveData  = MutableLiveData<List<Long>>()
+ val requestCurrencyListFromServerLiveData  = MutableLiveData<List<CurrencyModel>>()
 
-    private val listRepository: CurrencyListRepository
-
-    init {
-        Log.v("appSenario", "CurrencyServerListViewModel init")
-        val currencyDao = WalletRoomDatabase.getDatabase(application).currencyDao()
-        listRepository = CurrencyListRepository.getInstance(currencyDao)
-    }
-
+    @SuppressLint("CheckResult")
     fun insertCurrencyItemToDatabase(currencyModel: CurrencyModel) {
-
-        listRepository.insertCurrencyItemToDatabase(currencyModel)
+        currencyListRepository.insertCurrencyItemToDatabase(currencyModel)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe({insertCurrencyItemToDatabaseLiveData.value=it},{})
     }
 
+    @SuppressLint("CheckResult")
     fun insertCurrencyListToDatabase(currencyList: List<CurrencyModel>) {
         //TODO live data
-        listRepository.insertCurrencyListToDatabase(currencyList)
+        currencyListRepository.insertCurrencyListToDatabase(currencyList)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
+            .subscribe({insertCurrencyListToDatabaseLiveData.value = it},{})
     }
 
-    fun requestCurrencyListFromServer(): Observable<List<CurrencyModel>>? {
+    @SuppressLint("CheckResult")
+    fun requestCurrencyListFromServer(){
         //TODO send to livedata
         Log.v("appSenario", "requestCurrencyListFromServer in viewModel")
-        return listRepository.requestCurrencyListFromServer()
+         currencyListRepository.requestCurrencyListFromServer()
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({requestCurrencyListFromServerLiveData.value = it},{})
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.walletmvvm.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.walletmvvm.R
 import com.example.walletmvvm.ui.currencylocallist.CurrencyLocalListActivity
@@ -15,6 +16,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         initUiComponents()
+        Log.v("appSenario", "MainActivity create")
+
     }
 
     private fun initUiComponents() {

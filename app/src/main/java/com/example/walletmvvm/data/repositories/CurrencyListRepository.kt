@@ -5,6 +5,7 @@ import com.example.walletmvvm.data.dao.CurrencyDao
 import com.example.walletmvvm.data.model.CurrencyModel
 import com.example.walletmvvm.data.remote.APIClient
 import io.reactivex.Observable
+import io.reactivex.Observer
 import io.reactivex.Single
 
 
@@ -35,9 +36,8 @@ class CurrencyListRepository(private val currencyDao: CurrencyDao) {
         return currencyDao.insert(currencyModel)
     }
 
-    fun insertCurrencyListToDatabase(currencyListServer: List<CurrencyModel>): Single<Long> {
-        val list = currencyListServer.toTypedArray()
-        return currencyDao.insert(*list)
+    fun insertCurrencyListToDatabase(currencyListServer: List<CurrencyModel>): Single<List<Long>> {
+        return currencyDao.insert(currencyListServer)
     }
 
 

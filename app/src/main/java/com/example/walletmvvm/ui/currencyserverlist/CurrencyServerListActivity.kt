@@ -1,6 +1,7 @@
 package com.example.walletmvvm.ui.currencyserverlist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.walletmvvm.R
@@ -14,6 +15,7 @@ class CurrencyServerListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_currencyserverlist)
+        Log.v("appSenario", "CurrencyServerListActivity create")
 
         firstSetup()
     }

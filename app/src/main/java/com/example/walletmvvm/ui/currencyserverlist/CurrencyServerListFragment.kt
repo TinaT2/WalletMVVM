@@ -11,19 +11,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walletmvvm.R
 import com.example.walletmvvm.data.model.CurrencyModel
+import com.example.walletmvvm.data.repositories.CurrencyListRepository
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_currencyserverlist.*
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class CurrencyServerListFragment : Fragment(),
     CurrencyServerListAdapter.ViewCallbackInterface {
 
     private lateinit var currencyListAdapter: CurrencyServerListAdapter
 
-    private lateinit var currencyViewModel: CurrencyServerListViewModel
+    private  val currencyViewModel: CurrencyServerListViewModel by viewModel()
 
     private var currencyList = emptyList<CurrencyModel>()
+
 
 
     private val mRecyclerView by lazy { recyclerview_currencylist_list }
@@ -44,57 +48,33 @@ class CurrencyServerListFragment : Fragment(),
 
 
     private fun initUIComponents() {
-        initViewModel()
         initAdapter()
         initObservers()
     }
 
-    fun setRecyclerData(currencyList: List<CurrencyModel>) {
+    private fun setRecyclerData(currencyList: List<CurrencyModel>) {
         invisibleProgressBar()
         currencyListAdapter.setData(currencyList)
         this.currencyList = currencyList
     }
 
-
-    private fun responseCurrencyListFromServer(): Observer<List<CurrencyModel>> {
-
-        return object : Observer<List<CurrencyModel>> {
-
-            override fun onNext(currencyList: List<CurrencyModel>) {
-                Log.v("appSenario", "responseCurrencyListFromServer")
-                setRecyclerData(currencyList)
-                visibleAddAllButton()
-            }
-
-            override fun onComplete() {
-            }
-
-            override fun onSubscribe(d: Disposable) {
-            }
-
-            override fun onError(e: Throwable) {
-            }
-        }
-    }
-
-    private fun initViewModel() {
-        currencyViewModel = ViewModelProviders.of(this)
-            .get(CurrencyServerListViewModel::class.java)
-    }
-
     private fun initAdapter() {
-        mRecyclerView.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         currencyListAdapter = CurrencyServerListAdapter(this)
-        mRecyclerView.adapter = currencyListAdapter
+        mRecyclerView?.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        mRecyclerView?.adapter = currencyListAdapter
     }
 
 
     private fun initObservers() {
-        val requestCurrencyListObserver = currencyViewModel
-            .requestCurrencyListFromServer()
-        requestCurrencyListObserver
-            ?.subscribe(responseCurrencyListFromServer())
+        currencyViewModel.requestCurrencyListFromServer()
+        currencyViewModel.requestCurrencyListFromServerLiveData.observe(this,
+            androidx.lifecycle.Observer{currencyList->
+            Log.v("appSenario", "responseCurrencyListFromServer")
+            currencyList?.let{
+                setRecyclerData(it)
+                visibleAddAllButton() }
+        })
     }
 
     private fun invisibleProgressBar() {
